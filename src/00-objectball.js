@@ -114,12 +114,81 @@ function gameObject() {
     },
   }
 }
-
 // console.log(gameObject());
 
-function numPointsScored(name) {
-  const object = gameObject();
-  for (let player in players) {
+function homeTeam() {
+  return gameObject().home;
+}
 
+function awayTeam() {
+  return gameObject().away;
+}
+// console.log(homeTeam(), awayTeam());
+
+// Makes a copy of the gameObject()
+function players() {
+  // const homePlayers = gameObject().home.players;
+  // const awayPlayers = gameObject().away.players;
+  // return {...homePlayers, ...awayPlayers};
+  return Object.assign({}, homeTeam().players, awayTeam().players);
+}
+console.log(players());
+
+function numPointsScored(playerInput) {
+  for (const playerName in players()) {
+    if (playerName === playerInput) {
+      let points = players()[playerName].points;
+      return `${playerInput} scored ${points} points.`;
+    }
+  }
+  /*  const playerArrays = Object.entries(players())
+      let points;
+      playerArrays.forEach(playerArray => {
+        if (playerArray[0] === playerInput) {
+        points = playerArray[1].points;
+        }
+      }) 
+      return points;
+  */
+  /*  const playerArrays = Object.entries(players());
+      const player = playerArrays.find(playerArray => playerArray[0] === playerInput);
+      return player[1].points;
+      */
+
+  /*                                               // OR MORE SIMPLY:
+      return players()[playerInput].points;
+  */
+
+}
+// console.log(numPointsScored("Jeff Adrien"));
+
+function shoeSize(playerInput) {
+  const shoe = players()[playerInput].shoe;
+  return `${playerInput} has size ${shoe} shoes.`
+}
+// console.log(shoeSize("Mason Plumlee"));
+
+function teamColors(team) {
+  if (team === homeTeam().teamName) {
+    return homeTeam().colors;
+  } else if (team === awayTeam().teamName) {
+    return awayTeam().colors;
   }
 }
+// console.log(teamColors('Charlotte Hornets'));
+
+function teamNames() {
+  return [homeTeam().teamName, awayTeam().teamName];
+}
+// console.log(teamNames())
+
+function playerNumbers(teamName) {
+  return 
+}
+// console.log(playerNumbers('Brooklyn Nets'));
+
+function playerStats(playerInput) {
+  return players()[playerInput].value;
+}
+console.log(players()['DeSagna Diop'].value)
+console.log(playerStats('DeSagna Diop'));
