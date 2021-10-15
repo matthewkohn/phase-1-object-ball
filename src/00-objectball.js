@@ -114,8 +114,9 @@ function gameObject() {
     },
   }
 }
-// console.log(gameObject());
 
+//_______________________________________________________
+// Helper functions
 function homeTeam() {
   return gameObject().home;
 }
@@ -123,17 +124,29 @@ function homeTeam() {
 function awayTeam() {
   return gameObject().away;
 }
-// console.log(homeTeam(), awayTeam());
 
-// Makes a copy of the gameObject()
+function homeTeamPlayers() {
+  return Object.assign({}, homeTeam().players);
+}
+
+function awayTeamPlayers() {
+  return Object.assign({}, awayTeam().players);
+}
+//________________________________________________________
+// Breaks gameObject() into 2 arrays- home & away
+function arrayOfTeams() {
+  return Object.values(gameObject());
+}
+
+// Makes a copy of the gameObject() at the player level
 function players() {
-  // const homePlayers = gameObject().home.players;
-  // const awayPlayers = gameObject().away.players;
-  // return {...homePlayers, ...awayPlayers};
   return Object.assign({}, homeTeam().players, awayTeam().players);
 }
-console.log(players());
+function playersArray() {
+  return Object.entries(players());
+}
 
+// Returns the number of points a player has scored
 function numPointsScored(playerInput) {
   for (const playerName in players()) {
     if (playerName === playerInput) {
@@ -141,33 +154,15 @@ function numPointsScored(playerInput) {
       return `${playerInput} scored ${points} points.`;
     }
   }
-  /*  const playerArrays = Object.entries(players())
-      let points;
-      playerArrays.forEach(playerArray => {
-        if (playerArray[0] === playerInput) {
-        points = playerArray[1].points;
-        }
-      }) 
-      return points;
-  */
-  /*  const playerArrays = Object.entries(players());
-      const player = playerArrays.find(playerArray => playerArray[0] === playerInput);
-      return player[1].points;
-      */
-
-  /*                                               // OR MORE SIMPLY:
-      return players()[playerInput].points;
-  */
-
 }
-// console.log(numPointsScored("Jeff Adrien"));
 
+// Returns a string stating the player's shoe size
 function shoeSize(playerInput) {
   const shoe = players()[playerInput].shoe;
   return `${playerInput} has size ${shoe} shoes.`
 }
-// console.log(shoeSize("Mason Plumlee"));
 
+// Returns a team's colors
 function teamColors(team) {
   if (team === homeTeam().teamName) {
     return homeTeam().colors;
@@ -175,20 +170,82 @@ function teamColors(team) {
     return awayTeam().colors;
   }
 }
-// console.log(teamColors('Charlotte Hornets'));
 
+// Returns a list of team names
 function teamNames() {
   return [homeTeam().teamName, awayTeam().teamName];
 }
-// console.log(teamNames())
 
+// Returns an array of player numbers depending on which team is inputted
 function playerNumbers(teamName) {
-  return 
+  let arrayOfNumbers = [];
+  if (teamName === homeTeam().teamName) {
+    let teamPlayers = homeTeam().players;
+    let teamValues = Object.values(teamPlayers);
+    for (let player of teamValues) {
+      arrayOfNumbers.push(player.number);
+    }
+  } else if (teamName === awayTeam().teamName) {
+    let teamPlayers = awayTeam().players;
+    let teamValues = Object.values(teamPlayers);
+    for (let player of teamValues) {
+      console.log(player.number)
+      arrayOfNumbers.push(player.number);
+    }
+  }
+  return arrayOfNumbers;
 }
-// console.log(playerNumbers('Brooklyn Nets'));
 
+// Returns an object with the inputted player's stats
 function playerStats(playerInput) {
-  return players()[playerInput].value;
+  for (const playerName in players()) {
+    if (playerName === playerInput) {
+      return players()[playerName];
+    }
+  }
 }
-console.log(players()['DeSagna Diop'].value)
-console.log(playerStats('DeSagna Diop'));
+
+// Returns the number of rebounds associated with the player that has the largest shoe size
+function bigShoeRebounds() {
+  let arr = Object.values(players());
+  let shoeBox = []
+  for (let val of arr) {
+    let shoe = val.shoe;
+    shoeBox.push(shoe);
+  }
+  let biggestShoe = Math.max(...shoeBox);
+  for (let val of arr) {
+    let shoe = val.shoe;
+    if (shoe === biggestShoe) {
+      return val.rebounds;
+    }
+  }
+}
+
+// Which player has the most points?
+function mostPointsScored() {
+  let arr = Object.values(players());
+  let pointsArr = [];
+  for (let val of arr) {
+    let points = val.points;
+    pointsArr.push(points);
+  }
+  let mostPoints = Math.max(...pointsArr);
+  for (let players of playersArray()) {
+    console.log(players[0])
+    if (players[1].points === mostPoints) {
+      return `${players[0]} has the most points, scoring ${mostPoints} points.`;
+    }
+  }
+}
+
+// Which team has the most points?
+// function winningTeam() {
+//   homePoints = playersArray().reduce((player, points) => {
+
+//   }
+//   )
+// }
+
+console.log(mostPointsScored())
+console.log(playersArray())
